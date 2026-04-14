@@ -1,113 +1,145 @@
-
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍕 피자 가게 사장님</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Color+Emoji&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
-#app{font-family:var(--font-sans);display:flex;flex-direction:column;align-items:center;gap:10px;padding:.8rem 0;}
-#hud{display:flex;gap:14px;font-size:13px;font-weight:500;color:var(--color-text-primary);background:var(--color-background-secondary);padding:7px 16px;border-radius:8px;border:.5px solid var(--color-border-tertiary);}
-#main{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;justify-content:center;}
-#left{width:210px;display:flex;flex-direction:column;gap:8px;}
-.panel{background:var(--color-background-secondary);border-radius:10px;border:.5px solid var(--color-border-tertiary);padding:10px;}
-.ptitle{font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
-.ccard{background:var(--color-background-primary);border-radius:8px;border:.5px solid var(--color-border-tertiary);padding:9px;animation:slideIn .3s ease;}
+body{font-family:'Noto Sans KR',sans-serif;background:#fdf6ec;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1rem 0 2rem;}
+.temo,.qdot,.sicon,.npop,.tcard,.cname,.step-title,.sbtn,.bbtn,.ptitle,.corder{font-family:'Noto Color Emoji','Noto Sans KR',sans-serif;}
+h1{font-family:'Gaegu',cursive;font-size:2rem;color:#c2410c;letter-spacing:-.01em;margin-bottom:.5rem;}
+#hud{display:flex;gap:12px;font-size:13px;font-weight:500;padding:7px 16px;border-radius:20px;background:#fff;border:1.5px solid #fed7aa;box-shadow:0 2px 8px #f9731620;flex-wrap:wrap;justify-content:center;margin-bottom:8px;}
+#tab-row{display:flex;gap:6px;margin-bottom:10px;}
+.tab{font-size:13px;padding:7px 20px;border-radius:20px;cursor:pointer;border:1.5px solid #fed7aa;background:#fff;color:#c2410c;font-family:'Noto Sans KR',sans-serif;font-weight:500;transition:all .15s;}
+.tab.on{background:#c2410c;color:#fff;border-color:#c2410c;}
+#game-view{width:100%;display:flex;justify-content:center;}
+#shop-view{width:100%;max-width:680px;padding:0 12px;display:none;}
+#main{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;justify-content:center;}
+#left{width:216px;display:flex;flex-direction:column;gap:8px;}
+.panel{border-radius:14px;border:1.5px solid #fed7aa;padding:11px;background:#fff;box-shadow:0 2px 6px #f9731610;}
+.ptitle{font-size:11px;font-weight:700;color:#c2410c;margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em;}
+.ccard{border-radius:10px;border:1.5px solid #fed7aa;padding:9px;background:#fff;animation:slideIn .3s ease;}
 @keyframes slideIn{from{opacity:0;transform:translateX(-14px);}to{opacity:1;transform:translateX(0);}}
-.cname{font-size:13px;font-weight:500;color:var(--color-text-primary);display:flex;align-items:center;gap:5px;margin-bottom:5px;}
-.nbadge{font-size:9px;font-weight:500;background:#dcfce7;color:#15803d;padding:1px 5px;border-radius:4px;animation:pop .35s ease;}
+.cname{font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;margin-bottom:5px;color:#1e293b;}
+.nbadge{font-size:9px;font-weight:700;background:#dcfce7;color:#15803d;padding:1px 6px;border-radius:20px;animation:pop .35s ease;}
 @keyframes pop{0%{transform:scale(0);}65%{transform:scale(1.25);}100%{transform:scale(1);}}
-.corder{font-size:11.5px;background:var(--color-background-secondary);border-radius:6px;padding:6px 8px;line-height:2;}
+.corder{font-size:11.5px;border-radius:8px;padding:7px 9px;line-height:2.1;background:#fff7ed;}
 .crow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.clabel{font-weight:500;color:var(--color-text-primary);min-width:28px;font-size:11px;}
-.tpill{display:inline-flex;align-items:center;gap:2px;background:var(--color-background-tertiary);border:.5px solid var(--color-border-tertiary);border-radius:4px;padding:0 5px;font-size:11px;color:var(--color-text-primary);margin:1px 2px 1px 0;}
+.clabel{font-weight:700;color:#c2410c;min-width:28px;font-size:11px;}
+.tpill{display:inline-flex;align-items:center;gap:2px;background:#fff;border:1px solid #fed7aa;border-radius:5px;padding:0 6px;font-size:11px;color:#7c2d12;margin:1px 2px;}
 .tbar-wrap{margin-top:7px;}
-.tbar-lbl{font-size:10px;color:var(--color-text-secondary);display:flex;justify-content:space-between;margin-bottom:2px;}
-.tbar-bg{height:5px;border-radius:3px;background:var(--color-border-tertiary);}
-.tbar{height:5px;border-radius:3px;transition:width .5s,background .5s;}
-.queue-row{display:flex;gap:4px;flex-wrap:wrap;min-height:26px;}
-.qdot{font-size:22px;}
+.tbar-lbl{font-size:10px;color:#94a3b8;display:flex;justify-content:space-between;margin-bottom:3px;}
+.tbar-bg{height:6px;border-radius:3px;background:#f1f5f9;}
+.tbar{height:6px;border-radius:3px;transition:width .5s,background .5s;}
+.queue-row{display:flex;gap:5px;flex-wrap:wrap;min-height:28px;}
+.qdot{font-size:24px;}
 .qdot.newq{animation:bounceIn .3s ease;}
 @keyframes bounceIn{0%{transform:scale(0);}60%{transform:scale(1.3);}100%{transform:scale(1);}}
-#pizza-display{position:relative;width:180px;height:180px;margin:0 auto;}
-#pc{border-radius:50%;display:block;}
-#tl{position:absolute;top:0;left:0;width:180px;height:180px;pointer-events:none;}
-
-#right{display:flex;flex-direction:column;align-items:center;gap:7px;}
-#steps{display:flex;flex-direction:column;gap:6px;width:100%;max-width:310px;}
-.step{background:var(--color-background-secondary);border-radius:10px;border:.5px solid var(--color-border-tertiary);padding:8px 10px;transition:opacity .2s,border-color .2s;}
+#pizza-display{position:relative;width:184px;height:184px;margin:0 auto;}
+#pc{border-radius:50%;display:block;box-shadow:0 4px 16px #c2410c30;}
+#tl{position:absolute;top:0;left:0;width:184px;height:184px;pointer-events:none;}
+#right{display:flex;flex-direction:column;align-items:center;gap:8px;}
+#steps{display:flex;flex-direction:column;gap:7px;width:100%;max-width:316px;}
+.step{border-radius:12px;border:1.5px solid #fed7aa;padding:9px 11px;background:#fff;transition:opacity .2s,border-color .2s;box-shadow:0 1px 4px #f9731610;}
 .step.locked{opacity:.35;pointer-events:none;}
-.step.active{opacity:1;border-color:var(--color-border-primary);}
-.step.done{opacity:.65;}
-.step-head{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
-.step-num{width:20px;height:20px;border-radius:50%;background:var(--color-background-tertiary);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--color-text-secondary);flex-shrink:0;}
-.step.active .step-num{background:#1d4ed8;color:#fff;}
-.step.done .step-num{background:#16a34a;color:#fff;}
-.step-title{font-size:12px;font-weight:500;color:var(--color-text-primary);}
+.step.active{border-color:#f97316;box-shadow:0 0 0 3px #fed7aa60;}
+.step.done{opacity:.6;}
+.step-head{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.step-num{width:22px;height:22px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#94a3b8;flex-shrink:0;transition:all .2s;}
+.step.active .step-num{background:#f97316;color:#fff;}
+.step.done .step-num{background:#22c55e;color:#fff;}
+.step-title{font-size:12px;font-weight:700;color:#1e293b;}
 .step-body{display:flex;gap:5px;flex-wrap:wrap;}
-.sbtn{font-size:11px;padding:5px 9px;border:.5px solid var(--color-border-secondary);border-radius:7px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;transition:background .1s;}
-.sbtn:hover{background:var(--color-background-secondary);}
-.sbtn.active{background:#fef3c7;border-color:#f59e0b;color:#92400e;font-weight:500;}
-.bbtn{font-size:11px;padding:5px 9px;border:.5px solid var(--color-border-secondary);border-radius:7px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;transition:background .1s;}
-.bbtn:hover{background:var(--color-background-secondary);}
-.bbtn.active{background:#fff7ed;border-color:#fb923c;color:#9a3412;font-weight:500;}
-.tbtn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:5px 4px;border:.5px solid var(--color-border-secondary);border-radius:7px;background:var(--color-background-primary);cursor:pointer;position:relative;min-width:52px;}
-.tbtn:hover{background:var(--color-background-secondary);}
+.sbtn,.bbtn{font-size:11px;padding:5px 10px;border-radius:20px;cursor:pointer;border:1.5px solid #fed7aa;background:#fff;color:#7c2d12;font-family:'Noto Sans KR',sans-serif;font-weight:500;transition:all .1s;}
+.sbtn:hover,.bbtn:hover{background:#fff7ed;}
+.sbtn.active{background:#fef3c7;border-color:#f59e0b;color:#92400e;font-weight:700;}
+.bbtn.active{background:#fff7ed;border-color:#f97316;color:#9a3412;font-weight:700;}
+.tbtn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 4px;border-radius:10px;cursor:pointer;position:relative;min-width:54px;border:1.5px solid #fed7aa;background:#fff;transition:all .1s;}
+.tbtn:hover{background:#fff7ed;transform:scale(1.04);}
 .tbtn:active{transform:scale(.93);}
-.temo{font-size:17px;line-height:1;}
-.tname{font-size:9px;color:var(--color-text-secondary);}
-.tcnt{position:absolute;top:2px;right:3px;font-size:10px;font-weight:500;color:#16a34a;}
-/* 토핑 빼기 버튼 */
-.tremove{position:absolute;top:2px;left:3px;font-size:9px;color:#dc2626;font-weight:500;cursor:pointer;line-height:1;}
+.temo{font-size:18px;line-height:1;}
+.tname{font-size:9px;color:#94a3b8;font-weight:500;}
+.tcnt{position:absolute;top:2px;right:3px;font-size:10px;font-weight:700;color:#16a34a;}
+.tremove{position:absolute;top:2px;left:3px;font-size:9px;color:#dc2626;font-weight:700;cursor:pointer;}
+#action-row{display:flex;gap:8px;width:100%;max-width:316px;}
+#serve-btn{flex:1;font-size:13px;font-weight:700;padding:10px;border:none;border-radius:20px;background:#d1d5db;color:#fff;cursor:not-allowed;transition:all .2s;font-family:'Noto Sans KR',sans-serif;}
+#serve-btn.ready{background:#16a34a;cursor:pointer;box-shadow:0 3px 10px #16a34a40;}
+#serve-btn.ready:hover{background:#15803d;transform:scale(1.02);}
+#rst-btn{font-size:12px;padding:10px 14px;border-radius:20px;cursor:pointer;border:1.5px solid #fed7aa;background:#fff;color:#7c2d12;font-family:'Noto Sans KR',sans-serif;font-weight:500;}
+#msg{font-size:12px;font-weight:700;min-height:22px;text-align:center;padding:4px 12px;border-radius:20px;}
 
-#action-row{display:flex;gap:8px;width:100%;max-width:310px;}
-#serve-btn{flex:1;font-size:13px;font-weight:500;padding:9px;border:none;border-radius:8px;background:#9ca3af;color:#fff;cursor:not-allowed;transition:background .2s;}
-#serve-btn.ready{background:#16a34a;cursor:pointer;}
-#serve-btn.ready:hover{background:#15803d;}
-#rst-btn{font-size:12px;padding:9px 14px;border:.5px solid var(--color-border-secondary);border-radius:8px;background:var(--color-background-primary);color:var(--color-text-primary);cursor:pointer;}
-#msg{font-size:12px;font-weight:500;min-height:20px;text-align:center;padding:3px 10px;border-radius:6px;}
+/* shop */
+.shop-sec-title{font-size:12px;font-weight:700;color:#c2410c;margin:16px 0 9px;letter-spacing:.03em;}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:9px;}
+.scard{border-radius:12px;border:1.5px solid #fed7aa;padding:11px;display:flex;flex-direction:column;gap:5px;background:#fff;box-shadow:0 1px 4px #f9731610;}
+.scard.owned{border-color:#16a34a;}
+.scard.cant{opacity:.45;}
+.sicon{font-size:26px;line-height:1;}
+.sname{font-size:12px;font-weight:700;color:#1e293b;}
+.sdesc{font-size:11px;line-height:1.5;color:#64748b;}
+.sbuy{font-size:11px;font-weight:700;padding:6px 8px;border:none;border-radius:20px;cursor:pointer;margin-top:auto;font-family:'Noto Sans KR',sans-serif;}
 
-.notif-wrap{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:99;display:flex;flex-direction:column;gap:5px;align-items:center;pointer-events:none;}
-.npop{font-size:12px;font-weight:500;padding:6px 14px;border-radius:16px;color:#fff;white-space:nowrap;animation:npopAnim 2.2s ease forwards;}
-@keyframes npopAnim{0%{opacity:0;transform:translateY(-8px);}15%{opacity:1;transform:translateY(0);}78%{opacity:1;}100%{opacity:0;}}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:4px;}
+.tcard{border-radius:12px;border:2px solid transparent;padding:10px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:4px;align-items:center;box-shadow:0 1px 4px #00000012;}
+.tcard:hover{transform:scale(1.04);}
+.tcard-name{font-size:12px;font-weight:700;}
+.tcard-tag{font-size:10px;opacity:.6;}
+
+.notif-wrap{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:5px;align-items:center;pointer-events:none;}
+.npop{font-size:13px;font-weight:700;padding:7px 18px;border-radius:20px;color:#fff;white-space:nowrap;animation:npopAnim 2.2s ease forwards;box-shadow:0 4px 14px #00000030;}
+@keyframes npopAnim{0%{opacity:0;transform:translateY(-10px) scale(.9);}15%{opacity:1;transform:translateY(0) scale(1);}78%{opacity:1;}100%{opacity:0;}}
 </style>
+</head>
+<body>
+<h1>🍕 피자 가게 사장님</h1>
+<div id="hud">
+  <span>💰 <span id="money">0</span>원</span>
+  <span>😊 <span id="happy">0</span></span>
+  <span>😤 <span id="angry">0</span></span>
+  <span>Lv.<span id="level">1</span></span>
+  <span id="buff-display"></span>
+</div>
+<div id="tab-row">
+  <button class="tab on" id="tab-game" onclick="showTab('game')">🍕 주방</button>
+  <button class="tab" id="tab-shop" onclick="showTab('shop')">🛒 상점</button>
+</div>
 
-<div id="app">
-  <div id="hud">
-    <span>💰 <span id="money">0</span>원</span>
-    <span>😊 <span id="happy">0</span></span>
-    <span>😤 <span id="angry">0</span></span>
-    <span>Lv.<span id="level">1</span></span>
-  </div>
+<div id="game-view">
   <div id="main">
     <div id="left">
       <div class="panel">
         <div class="ptitle">👤 현재 손님</div>
-        <div id="cur-cust"><div style="font-size:12px;color:var(--color-text-secondary);">손님 기다리는 중...</div></div>
+        <div id="cur-cust"><div style="font-size:12px;color:#94a3b8;">손님 기다리는 중...</div></div>
       </div>
       <div class="panel">
         <div class="ptitle">🕐 대기</div>
         <div class="queue-row" id="queue"></div>
       </div>
       <div id="pizza-display">
-        <canvas id="pc" width="180" height="180"></canvas>
+        <canvas id="pc" width="184" height="184"></canvas>
         <div id="tl"></div>
       </div>
     </div>
-
     <div id="right">
       <div id="steps">
         <div class="step active" id="step1">
           <div class="step-head"><div class="step-num" id="sn1">1</div><div class="step-title">🍅 소스 선택</div></div>
           <div class="step-body" id="sauce-row">
             <button class="sbtn" onclick="setSauce('tomato')" data-s="tomato">🍅 토마토</button>
-            <button class="sbtn" onclick="setSauce('cream')" data-s="cream">🤍 크림</button>
-            <button class="sbtn" onclick="setSauce('bbq')" data-s="bbq">🫙 BBQ</button>
-            <button class="sbtn" onclick="setSauce('garlic')" data-s="garlic">🧄 갈릭</button>
+            <button class="sbtn" onclick="setSauce('cream')" data-s="cream">☁️ 크림</button>
+            <button class="sbtn" onclick="setSauce('bbq')" data-s="bbq">🍖 BBQ</button>
+            <button class="sbtn" onclick="setSauce('garlic')" data-s="garlic">🌿 갈릭</button>
           </div>
         </div>
         <div class="step locked" id="step2">
-          <div class="step-head"><div class="step-num" id="sn2">2</div><div class="step-title">🧀 토핑 올리기 <span id="topping-count" style="font-size:10px;font-weight:400;color:var(--color-text-secondary);"></span></div></div>
+          <div class="step-head"><div class="step-num" id="sn2">2</div><div class="step-title">🧀 토핑 <span id="topping-count" style="font-size:10px;font-weight:400;color:#94a3b8;"></span></div></div>
           <div class="step-body" id="topping-grid"></div>
         </div>
         <div class="step locked" id="step3">
           <div class="step-head"><div class="step-num" id="sn3">3</div><div class="step-title">🔥 굽기</div></div>
-          <div class="step-body" id="bake-row">
+          <div class="step-body">
             <button class="bbtn" onclick="setBake('light')" data-b="light">🌕 약하게</button>
             <button class="bbtn" onclick="setBake('normal')" data-b="normal">🔥 보통</button>
             <button class="bbtn" onclick="setBake('well')" data-b="well">🌑 바삭하게</button>
@@ -122,21 +154,41 @@
     </div>
   </div>
 </div>
+<div id="shop-view"></div>
 <div class="notif-wrap" id="notif"></div>
 
 <script>
-const canvas=document.getElementById('pc');
-const ctx=canvas.getContext('2d');
-const CX=90,CY=90,R=80,CR=88;
-const TOPPINGS=[
-  {e:'🧀',n:'치즈'},{e:'🍖',n:'불고기'},{e:'🥓',n:'베이컨'},
-  {e:'🍤',n:'새우'},{e:'🌽',n:'옥수수'},{e:'🍄',n:'버섯'},
-  {e:'🫑',n:'파프리카'},{e:'🫒',n:'올리브'},{e:'🌶️',n:'고추'},{e:'🧅',n:'양파'}
+const THEMES={
+  classic:{name:'클래식',tag:'기본',icon:'🍕',price:0,body:'background:#fdf6ec;',preview:'#fdf6ec',previewText:'#7c2d12'},
+  dark:{name:'다크',tag:'야간 영업',icon:'🌙',price:5000,body:'background:#0f172a;',preview:'#1e293b',previewText:'#e2e8f0'},
+  sunset:{name:'선셋',tag:'따뜻한 저녁',icon:'🌅',price:8000,body:'background:#fff7ed;',preview:'#fff7ed',previewText:'#7c2d12'},
+  mint:{name:'민트',tag:'상쾌한 아침',icon:'🌿',price:8000,body:'background:#f0fdf4;',preview:'#f0fdf4',previewText:'#14532d'},
+  purple:{name:'퍼플',tag:'고급스러운',icon:'💜',price:10000,body:'background:#faf5ff;',preview:'#faf5ff',previewText:'#4c1d95'},
+  neon:{name:'네온',tag:'클럽 피자',icon:'🔮',price:15000,body:'background:#0d0d0d;',preview:'#0d0d0d',previewText:'#f0abfc'},
+};
+const THEME_STYLES={
+  classic:{hud:'background:#fff;border:1.5px solid #fed7aa;',panel:'background:#fff;border-color:#fed7aa;',step:'background:#fff;border-color:#fed7aa;',stepActive:'border-color:#f97316;box-shadow:0 0 0 3px #fed7aa60;',numDef:'background:#f1f5f9;color:#94a3b8;',numActive:'background:#f97316;color:#fff;',numDone:'background:#22c55e;color:#fff;',btn:'background:#fff;border:1.5px solid #fed7aa;color:#7c2d12;',ccard:'background:#fff;border:1.5px solid #fed7aa;',corder:'background:#fff7ed;',pill:'background:#fff;border:1px solid #fed7aa;color:#7c2d12;',tbarBg:'background:#f1f5f9;',tab:'background:#fff;border:1.5px solid #fed7aa;color:#c2410c;',tabOn:'background:#c2410c;color:#fff;border-color:#c2410c;',title:'color:#c2410c;',ptitle:'color:#c2410c;',bodyText:'color:#1e293b;'},
+  dark:{hud:'background:#1e293b;border:1.5px solid #334155;color:#e2e8f0;',panel:'background:#1e293b;border-color:#334155;',step:'background:#1e293b;border-color:#334155;',stepActive:'border-color:#60a5fa;box-shadow:0 0 0 3px #3b82f620;',numDef:'background:#334155;color:#94a3b8;',numActive:'background:#3b82f6;color:#fff;',numDone:'background:#22c55e;color:#fff;',btn:'background:#1e293b;border:1.5px solid #334155;color:#e2e8f0;',ccard:'background:#1e293b;border:1.5px solid #334155;',corder:'background:#0f172a;',pill:'background:#334155;border:1px solid #475569;color:#cbd5e1;',tbarBg:'background:#334155;',tab:'background:#1e293b;border:1.5px solid #334155;color:#94a3b8;',tabOn:'background:#3b82f6;color:#fff;border-color:#3b82f6;',title:'color:#93c5fd;',ptitle:'color:#94a3b8;',bodyText:'color:#e2e8f0;'},
+  sunset:{hud:'background:#fff7ed;border:1.5px solid #fed7aa;',panel:'background:#fff7ed;border-color:#fdba74;',step:'background:#fff7ed;border-color:#fdba74;',stepActive:'border-color:#ea580c;box-shadow:0 0 0 3px #fed7aa60;',numDef:'background:#fed7aa;color:#9a3412;',numActive:'background:#ea580c;color:#fff;',numDone:'background:#16a34a;color:#fff;',btn:'background:#fff;border:1.5px solid #fdba74;color:#7c2d12;',ccard:'background:#fff;border:1.5px solid #fdba74;',corder:'background:#fff7ed;',pill:'background:#ffedd5;border:1px solid #fdba74;color:#7c2d12;',tbarBg:'background:#fed7aa;',tab:'background:#fff7ed;border:1.5px solid #fdba74;color:#c2410c;',tabOn:'background:#ea580c;color:#fff;border-color:#ea580c;',title:'color:#c2410c;',ptitle:'color:#c2410c;',bodyText:'color:#1e293b;'},
+  mint:{hud:'background:#f0fdf4;border:1.5px solid #bbf7d0;',panel:'background:#f0fdf4;border-color:#bbf7d0;',step:'background:#f0fdf4;border-color:#bbf7d0;',stepActive:'border-color:#16a34a;box-shadow:0 0 0 3px #bbf7d060;',numDef:'background:#bbf7d0;color:#15803d;',numActive:'background:#16a34a;color:#fff;',numDone:'background:#15803d;color:#fff;',btn:'background:#fff;border:1.5px solid #bbf7d0;color:#14532d;',ccard:'background:#fff;border:1.5px solid #bbf7d0;',corder:'background:#f0fdf4;',pill:'background:#dcfce7;border:1px solid #bbf7d0;color:#14532d;',tbarBg:'background:#bbf7d0;',tab:'background:#f0fdf4;border:1.5px solid #bbf7d0;color:#15803d;',tabOn:'background:#16a34a;color:#fff;border-color:#16a34a;',title:'color:#15803d;',ptitle:'color:#15803d;',bodyText:'color:#1e293b;'},
+  purple:{hud:'background:#faf5ff;border:1.5px solid #ddd6fe;',panel:'background:#faf5ff;border-color:#ddd6fe;',step:'background:#faf5ff;border-color:#ddd6fe;',stepActive:'border-color:#7c3aed;box-shadow:0 0 0 3px #ddd6fe60;',numDef:'background:#ddd6fe;color:#5b21b6;',numActive:'background:#7c3aed;color:#fff;',numDone:'background:#16a34a;color:#fff;',btn:'background:#fff;border:1.5px solid #ddd6fe;color:#4c1d95;',ccard:'background:#fff;border:1.5px solid #ddd6fe;',corder:'background:#faf5ff;',pill:'background:#ede9fe;border:1px solid #ddd6fe;color:#4c1d95;',tbarBg:'background:#ddd6fe;',tab:'background:#faf5ff;border:1.5px solid #ddd6fe;color:#7c3aed;',tabOn:'background:#7c3aed;color:#fff;border-color:#7c3aed;',title:'color:#7c3aed;',ptitle:'color:#7c3aed;',bodyText:'color:#1e293b;'},
+  neon:{hud:'background:#0d0d0d;border:1.5px solid #a21caf;color:#f0abfc;',panel:'background:#1a0020;border-color:#a21caf;',step:'background:#1a0020;border-color:#a21caf;',stepActive:'border-color:#e879f9;box-shadow:0 0 0 3px #a21caf40;',numDef:'background:#2d0040;color:#c026d3;',numActive:'background:#c026d3;color:#fff;',numDone:'background:#16a34a;color:#fff;',btn:'background:#1a0020;border:1.5px solid #a21caf;color:#f0abfc;',ccard:'background:#1a0020;border:1.5px solid #a21caf;',corder:'background:#0d0d0d;',pill:'background:#2d0040;border:1px solid #a21caf;color:#f0abfc;',tbarBg:'background:#2d0040;',tab:'background:#0d0d0d;border:1.5px solid #a21caf;color:#e879f9;',tabOn:'background:#c026d3;color:#fff;border-color:#c026d3;',title:'color:#e879f9;',ptitle:'color:#c084fc;',bodyText:'color:#f0abfc;'},
+};
+const SHOP_ITEMS=[
+  {id:'tip',icon:'💸',name:'팁 문화 도입',desc:'성공 서빙 시 +1,000원 팁',price:8000,section:'💰 수익 업그레이드',owned:false},
+  {id:'vip',icon:'👑',name:'VIP 손님 유치',desc:'가끔 VIP 손님 등장 (2배 수익)',price:20000,section:'💰 수익 업그레이드',owned:false},
+  {id:'combo',icon:'🔥',name:'콤보 보너스',desc:'연속 성공 3회마다 +3,000원',price:15000,section:'💰 수익 업그레이드',owned:false},
+  {id:'timer',icon:'⏰',name:'여유로운 손님',desc:'대기 시간 +15초',price:10000,section:'🍳 주방 업그레이드',owned:false},
+  {id:'slot',icon:'🪑',name:'좌석 확장',desc:'대기 손님 최대 6명',price:18000,section:'🍳 주방 업그레이드',owned:false},
+  {id:'undo',icon:'↩️',name:'소스 변경권',desc:'소스 선택 후 다시 변경 가능',price:12000,section:'🍳 주방 업그레이드',owned:false},
+  {id:'hint',icon:'💡',name:'힌트 시스템',desc:'틀리면 어디가 틀렸는지 알려줌',price:15000,section:'✨ 특수 능력',owned:false},
+  {id:'freeze',icon:'❄️',name:'시간 정지 3회',desc:'현재 손님 타이머 +10초 (3회)',price:12000,section:'✨ 특수 능력',owned:false},
+  {id:'auto',icon:'🤖',name:'AI 보조',desc:'주문서 소스/굽기 색깔 강조',price:9000,section:'✨ 특수 능력',owned:false},
 ];
 const SC={tomato:'#e53e3e',cream:'#f0e9d2',bbq:'#7b3f00',garlic:'#d4a843'};
 const BC={light:'#f5dfa0',normal:'#d4a043',well:'#8b5e1a'};
 const BCC={light:'#e8c58a',normal:'#c47a2b',well:'#7a4010'};
-const SN={tomato:'🍅 토마토',cream:'🤍 크림',bbq:'🫙 BBQ',garlic:'🧄 갈릭'};
+const SN={tomato:'🍅 토마토',cream:'☁️ 크림',bbq:'🍖 BBQ',garlic:'🌿 갈릭'};
 const BN={light:'🌕 약하게',normal:'🔥 보통',well:'🌑 바삭하게'};
 const MENUS=[
   {name:'마르게리타',sauce:'tomato',bake:'normal',toppings:{치즈:2},emoji:'👩'},
@@ -148,297 +200,338 @@ const MENUS=[
   {name:'고추 불고기',sauce:'bbq',bake:'well',toppings:{치즈:1,불고기:2,고추:1},emoji:'👦'},
   {name:'올리브 크림',sauce:'cream',bake:'normal',toppings:{치즈:1,올리브:2,새우:1},emoji:'🧒'},
 ];
-
+const TOPPINGS=[
+  {e:'🧀',n:'치즈'},{e:'🍖',n:'불고기'},{e:'🥓',n:'베이컨'},
+  {e:'🍤',n:'새우'},{e:'🌽',n:'옥수수'},{e:'🍄',n:'버섯'},
+  {e:'🥬',n:'파프리카'},{e:'🍵',n:'올리브'},{e:'🌶️',n:'고추'},{e:'🌰',n:'양파'}
+];
 let money=0,happy=0,angry=0,level=1;
-let curSauce=null,curBake=null,curToppings={};
-// 단계 잠금: 0=소스, 1=토핑, 2=굽기, 3=완료
-let curStep=0;
-let customers=[],timers={},nextId=0,newIds=new Set(),renderedCurId=null;
-let spawnTimer=null;
-
+let curSauce=null,curBake=null,curToppings={},curStep=0;
+let customers=[],timers={},nextId=0,newIds=new Set(),renderedCurId=null,spawnTimer=null;
+let buffs={tip:false,vip:false,combo:false,timer:false,slot:false,undo:false,hint:false,freeze:0,auto:false};
+let comboCount=0,currentTheme='classic',ownedThemes=new Set(['classic']),currentTab='game';
 function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-
+function T(){return THEME_STYLES[currentTheme];}
+function applyTheme(id){
+  currentTheme=id;
+  const t=THEMES[id],ts=THEME_STYLES[id];
+  document.body.style.cssText=t.body;
+  document.getElementById('hud').style.cssText=ts.hud;
+  document.querySelectorAll('.panel').forEach(p=>p.style.cssText=ts.panel);
+  document.querySelectorAll('.ptitle').forEach(p=>p.style.cssText=ts.ptitle);
+  document.querySelectorAll('.ccard').forEach(c=>c.style.cssText=ts.ccard);
+  document.querySelectorAll('.corder').forEach(c=>c.style.cssText=ts.corder);
+  document.querySelectorAll('.tpill').forEach(p=>p.style.cssText=ts.pill);
+  document.querySelectorAll('.tbar-bg').forEach(b=>b.style.cssText=ts.tbarBg);
+  document.querySelectorAll('.sbtn,.bbtn,.tbtn').forEach(b=>b.style.cssText=ts.btn);
+  document.querySelectorAll('.sbtn.active').forEach(b=>b.style.cssText='background:#fef3c7;border:1.5px solid #f59e0b;color:#92400e;font-weight:700;border-radius:20px;');
+  document.querySelectorAll('.bbtn.active').forEach(b=>b.style.cssText='background:#fff7ed;border:1.5px solid #f97316;color:#9a3412;font-weight:700;border-radius:20px;');
+  document.getElementById('rst-btn').style.cssText=ts.btn;
+  document.querySelectorAll('.step-title').forEach(el=>el.style.cssText=ts.bodyText);
+  document.querySelector('h1').style.cssText=ts.title;
+  updateTabStyles();updateStepUI();
+}
+function updateTabStyles(){
+  const ts=T();
+  document.getElementById('tab-game').style.cssText=ts.tab+(currentTab==='game'?ts.tabOn:'');
+  document.getElementById('tab-shop').style.cssText=ts.tab+(currentTab==='shop'?ts.tabOn:'');
+}
+function showTab(t){
+  currentTab=t;
+  document.getElementById('game-view').style.display=t==='game'?'flex':'none';
+  document.getElementById('shop-view').style.display=t==='shop'?'block':'none';
+  updateTabStyles();if(t==='shop')renderShop();
+}
 function popup(txt,bg){
-  const n=document.getElementById('notif');
-  const d=document.createElement('div');
+  const n=document.getElementById('notif'),d=document.createElement('div');
   d.className='npop';d.style.background=bg||'#1e293b';d.textContent=txt;
   n.appendChild(d);setTimeout(()=>d.remove(),2300);
 }
-
+function renderShop(){
+  const ts=T();let html='';
+  const active=SHOP_ITEMS.filter(x=>x.owned);
+  if(active.length){
+    html+=`<div class="shop-sec-title" style="${ts.title}">✅ 보유 업그레이드</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">`;
+    active.forEach(b=>{html+=`<span style="font-size:11px;padding:3px 9px;border-radius:20px;${ts.pill}">${b.icon} ${b.name}</span>`;});
+    html+=`</div>`;
+    if(buffs.freeze>0)html+=`<div style="font-size:11px;margin-bottom:12px;${ts.ptitle}">❄️ 남은 횟수: ${buffs.freeze}회 <button onclick="useFreeze()" style="font-size:11px;padding:2px 10px;border-radius:20px;border:none;background:#0369a1;color:#fff;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">사용</button></div>`;
+  }
+  html+=`<div class="shop-sec-title" style="${ts.title}">🎨 테마 변경</div><div class="theme-grid">`;
+  Object.entries(THEMES).forEach(([tid,th])=>{
+    const owned=ownedThemes.has(tid),isSel=currentTheme===tid;
+    html+=`<div class="tcard" style="background:${th.preview};border-color:${isSel?'#7c3aed':owned?'#16a34a':'transparent'};" onclick="${owned?`setTheme('${tid}')`:''}" >
+      <div style="font-size:22px;">${th.icon}</div>
+      <div class="tcard-name" style="color:${th.previewText}">${th.name}</div>
+      <div class="tcard-tag" style="color:${th.previewText}">${th.tag}</div>
+      ${isSel?`<div style="font-size:10px;color:#7c3aed;font-weight:700;">✓ 적용 중</div>`:owned?`<div style="font-size:10px;color:#16a34a;font-weight:700;">보유 중</div>`:`<button onclick="buyTheme('${tid}')" style="font-size:11px;padding:4px 8px;border:none;border-radius:20px;background:${money>=th.price?'#1d4ed8':'#9ca3af'};color:#fff;cursor:${money>=th.price?'pointer':'not-allowed'};font-family:'Noto Sans KR',sans-serif;font-weight:700;">💰 ${th.price.toLocaleString()}원</button>`}
+    </div>`;
+  });
+  html+=`</div>`;
+  const sections={};
+  SHOP_ITEMS.forEach(item=>{if(!sections[item.section])sections[item.section]=[];sections[item.section].push(item);});
+  Object.entries(sections).forEach(([sec,items])=>{
+    html+=`<div class="shop-sec-title" style="${ts.title}">${sec}</div><div class="shop-grid">`;
+    items.forEach(item=>{
+      const canBuy=!item.owned&&money>=item.price;
+      html+=`<div class="scard ${item.owned?'owned':!canBuy?'cant':''}" style="${ts.panel}${item.owned?'border-color:#16a34a;':''}">
+        <div class="sicon">${item.icon}</div>
+        <div class="sname" style="${ts.bodyText}">${item.name}</div>
+        <div class="sdesc">${item.desc}</div>
+        <button class="sbuy" style="${item.owned?'background:#dcfce7;color:#15803d;cursor:default;':canBuy?'background:#1d4ed8;color:#fff;cursor:pointer;':'background:#e5e7eb;color:#9ca3af;cursor:not-allowed;'}" onclick="buyItem('${item.id}')">
+          ${item.owned?'✓ 보유 중':canBuy?`💰 ${item.price.toLocaleString()}원`:`💸 ${item.price.toLocaleString()}원`}
+        </button>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  document.getElementById('shop-view').innerHTML=html;
+}
+function setTheme(id){if(!ownedThemes.has(id))return;applyTheme(id);renderShop();popup(`${THEMES[id].icon} "${THEMES[id].name}" 테마 적용!`,'#5b21b6');}
+function buyTheme(id){
+  const t=THEMES[id];if(ownedThemes.has(id)||money<t.price)return;
+  money-=t.price;ownedThemes.add(id);updateHUD();setTheme(id);renderShop();
+  popup(`${t.icon} "${t.name}" 테마 구매!`,'#5b21b6');
+}
+function buyItem(id){
+  const item=SHOP_ITEMS.find(x=>x.id===id);if(!item||item.owned||money<item.price)return;
+  money-=item.price;item.owned=true;if(id==='freeze')buffs.freeze=3;else buffs[id]=true;
+  updateHUD();renderShop();popup(`${item.icon} "${item.name}" 구매 완료!`,'#7c3aed');
+}
+function useFreeze(){
+  if(!buffs.freeze||!customers.length)return;
+  buffs.freeze--;customers[0].timeLeft=Math.min(customers[0].timeLeft+10000,customers[0].maxTime);
+  popup('❄️ 시간 정지! +10초','#0369a1');renderShop();updateHUD();
+}
+function updateBuffDisplay(){
+  const p=[];
+  if(buffs.tip)p.push('💸팁');if(buffs.vip)p.push('👑VIP');
+  if(buffs.combo)p.push(`🔥콤보${comboCount}`);if(buffs.freeze>0)p.push(`❄️×${buffs.freeze}`);
+  document.getElementById('buff-display').textContent=p.join(' ');
+}
+const canvas=document.getElementById('pc'),ctx=canvas.getContext('2d');
+const CX=92,CY=92,R=82,CR=90;
 function buildGrid(){
-  const g=document.getElementById('topping-grid');
-  g.innerHTML='';
+  const g=document.getElementById('topping-grid');g.innerHTML='';
   TOPPINGS.forEach(t=>{
-    const b=document.createElement('button');
-    b.className='tbtn';
+    const b=document.createElement('button');b.className='tbtn';b.style.cssText=T().btn;
     b.innerHTML=`<span class="temo">${t.e}</span><span class="tname">${t.n}</span><span class="tcnt" id="tc-${t.n}"></span><span class="tremove" id="tr-${t.n}" onclick="removeT('${t.n}',event)" style="display:none;">✕</span>`;
-    b.onclick=()=>addT(t.e,t.n);
-    g.appendChild(b);
+    b.onclick=()=>addT(t.e,t.n);g.appendChild(b);
   });
 }
-
 function updateStepUI(){
-  // step1
-  const s1=document.getElementById('step1');
-  const s2=document.getElementById('step2');
-  const s3=document.getElementById('step3');
-  // 단계별 클래스 적용
-  if(curStep===0){
-    s1.className='step active';s2.className='step locked';s3.className='step locked';
-  } else if(curStep===1){
-    s1.className='step done';s2.className='step active';s3.className='step locked';
-  } else if(curStep===2){
-    s1.className='step done';s2.className='step done';s3.className='step active';
-  } else {
-    s1.className='step done';s2.className='step done';s3.className='step done';
-  }
-  // 번호 아이콘
-  document.getElementById('sn1').textContent=curStep>0?'✓':'1';
-  document.getElementById('sn2').textContent=curStep>1?'✓':'2';
-  document.getElementById('sn3').textContent=curStep>2?'✓':'3';
-  // 서빙 버튼 활성화: 손님 있고 3단계 완료 시
+  const ts=T();
+  const s1=document.getElementById('step1'),s2=document.getElementById('step2'),s3=document.getElementById('step3');
+  if(curStep===0){s1.className='step active';s2.className='step locked';s3.className='step locked';}
+  else if(curStep===1){s1.className='step done';s2.className='step active';s3.className='step locked';}
+  else if(curStep===2){s1.className='step done';s2.className='step done';s3.className='step active';}
+  else{s1.className='step done';s2.className='step done';s3.className='step done';}
+  [s1,s2,s3].forEach((s,i)=>{
+    s.style.cssText=ts.step;
+    if(s.classList.contains('active'))s.style.cssText+=ts.stepActive;
+    if(s.classList.contains('locked'))s.style.opacity='.35';
+  });
+  const nums=[document.getElementById('sn1'),document.getElementById('sn2'),document.getElementById('sn3')];
+  [s1,s2,s3].forEach((s,i)=>{
+    const n=nums[i];if(!n)return;
+    if(s.classList.contains('done')){n.textContent='✓';n.style.cssText=ts.numDone;}
+    else if(s.classList.contains('active')){n.textContent=i+1+'';n.style.cssText=ts.numActive;}
+    else{n.textContent=i+1+'';n.style.cssText=ts.numDef;}
+  });
   const btn=document.getElementById('serve-btn');
   btn.className=curStep===3&&customers.length?'ready':'';
+  if(buffs.undo&&curStep>=1){s1.style.pointerEvents='auto';s1.style.opacity='.85';}
 }
-
 function updateToppingCounts(){
   TOPPINGS.forEach(t=>{
-    const el=document.getElementById('tc-'+t.n);
-    const rm=document.getElementById('tr-'+t.n);
+    const el=document.getElementById('tc-'+t.n),rm=document.getElementById('tr-'+t.n);
     const cnt=curToppings[t.n]||0;
-    if(el)el.textContent=cnt||'';
-    if(rm)rm.style.display=cnt>0?'block':'none';
+    if(el)el.textContent=cnt||'';if(rm)rm.style.display=cnt>0?'block':'none';
   });
   const total=Object.values(curToppings).reduce((a,b)=>a+b,0);
   document.getElementById('topping-count').textContent=total?`(${total}개)`:'';
 }
-
-// 소스 선택 → 1단계 잠금, 2단계 활성화
 function setSauce(s){
-  if(curStep!==0)return; // 이미 진행됐으면 변경 불가
+  if(curStep!==0&&!buffs.undo)return;
   curSauce=s;
-  document.querySelectorAll('.sbtn').forEach(b=>b.classList.toggle('active',b.dataset.s===s));
-  drawPizza();
-  // 소스 선택 즉시 다음 단계로
-  curStep=1;
-  updateStepUI();
+  document.querySelectorAll('.sbtn').forEach(b=>{
+    b.classList.toggle('active',b.dataset.s===s);
+    b.style.cssText=b.dataset.s===s?'background:#fef3c7;border:1.5px solid #f59e0b;color:#92400e;font-weight:700;border-radius:20px;':T().btn;
+  });
+  drawPizza();if(curStep===0)curStep=1;updateStepUI();
 }
-
-// 토핑은 2단계에서만. 완료 버튼으로 3단계 진입
 function addT(e,n){
   if(curStep!==1)return;
   if(Object.values(curToppings).reduce((a,b)=>a+b,0)>=10)return;
   curToppings[n]=(curToppings[n]||0)+1;
-  const angle=Math.random()*Math.PI*2,r=Math.random()*58+10;
+  const angle=Math.random()*Math.PI*2,r=Math.random()*60+10;
   const d=document.createElement('div');
   d.style.cssText=`position:absolute;left:${CX+r*Math.cos(angle)}px;top:${CY+r*Math.sin(angle)}px;font-size:16px;transform:translate(-50%,-50%) rotate(${rnd(-20,20)}deg);`;
-  d.textContent=e;
-  document.getElementById('tl').appendChild(d);
-  updateToppingCounts();
-  // 토핑 있으면 "다음 단계" 버튼 보여주기
-  showNextToppingBtn();
+  d.textContent=e;document.getElementById('tl').appendChild(d);
+  updateToppingCounts();showNextBtn();
 }
-
 function removeT(n,ev){
-  ev.stopPropagation();
-  if(curStep!==1)return;
-  if(!curToppings[n])return;
-  curToppings[n]--;
-  if(curToppings[n]===0)delete curToppings[n];
-  // 피자 토핑 레이어 재렌더
-  redrawToppings();
-  updateToppingCounts();
-  showNextToppingBtn();
+  ev.stopPropagation();if(curStep!==1||!curToppings[n])return;
+  curToppings[n]--;if(!curToppings[n])delete curToppings[n];
+  redrawToppings();updateToppingCounts();showNextBtn();
 }
-
 function redrawToppings(){
-  const tl=document.getElementById('tl');
-  tl.innerHTML='';
+  const tl=document.getElementById('tl');tl.innerHTML='';
   Object.entries(curToppings).forEach(([n,cnt])=>{
-    const t=TOPPINGS.find(x=>x.n===n);
-    if(!t)return;
+    const t=TOPPINGS.find(x=>x.n===n);if(!t)return;
     for(let i=0;i<cnt;i++){
-      const angle=Math.random()*Math.PI*2,r=Math.random()*58+10;
+      const angle=Math.random()*Math.PI*2,r=Math.random()*60+10;
       const d=document.createElement('div');
       d.style.cssText=`position:absolute;left:${CX+r*Math.cos(angle)}px;top:${CY+r*Math.sin(angle)}px;font-size:16px;transform:translate(-50%,-50%) rotate(${rnd(-20,20)}deg);`;
-      d.textContent=t.e;
-      tl.appendChild(d);
+      d.textContent=t.e;tl.appendChild(d);
     }
   });
 }
-
-function showNextToppingBtn(){
-  // 토핑 영역에 "굽기 선택 →" 버튼 추가/제거
-  let nb=document.getElementById('topping-next-btn');
+function showNextBtn(){
+  let nb=document.getElementById('tnb');
   const total=Object.values(curToppings).reduce((a,b)=>a+b,0);
   if(total>0&&!nb){
-    nb=document.createElement('button');
-    nb.id='topping-next-btn';
-    nb.className='sbtn';
-    nb.style.cssText='background:#1d4ed8;color:#fff;border-color:#1d4ed8;font-weight:500;width:100%;margin-top:4px;';
-    nb.textContent='굽기 선택 →';
-    nb.onclick=()=>{if(curStep===1){curStep=2;updateStepUI();}};
+    nb=document.createElement('button');nb.id='tnb';
+    nb.style.cssText='background:#1d4ed8;color:#fff;border:1.5px solid #1d4ed8;font-weight:700;width:100%;margin-top:4px;font-size:11px;padding:6px 10px;border-radius:20px;cursor:pointer;font-family:\'Noto Sans KR\',sans-serif;';
+    nb.textContent='굽기 선택 →';nb.onclick=()=>{if(curStep===1){curStep=2;updateStepUI();}};
     document.getElementById('topping-grid').after(nb);
-  } else if(total===0&&nb){
-    nb.remove();
-  }
+  }else if(total===0&&nb)nb.remove();
 }
-
 function setBake(b){
-  if(curStep!==2)return; // 굽기도 딱 한 번만
+  if(curStep!==2)return;
   curBake=b;
-  document.querySelectorAll('.bbtn').forEach(btn=>btn.classList.toggle('active',btn.dataset.b===b));
-  drawPizza();
-  curStep=3;
-  updateStepUI();
+  document.querySelectorAll('.bbtn').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.b===b);
+    btn.style.cssText=btn.dataset.b===b?'background:#fff7ed;border:1.5px solid #f97316;color:#9a3412;font-weight:700;border-radius:20px;':T().btn;
+  });
+  drawPizza();curStep=3;updateStepUI();
 }
-
 function resetPizza(){
   curSauce=null;curBake=null;curToppings={};curStep=0;
-  document.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.bbtn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.sbtn').forEach(b=>{b.classList.remove('active');b.style.cssText=T().btn;});
+  document.querySelectorAll('.bbtn').forEach(b=>{b.classList.remove('active');b.style.cssText=T().btn;});
   document.getElementById('tl').innerHTML='';
-  const nb=document.getElementById('topping-next-btn');if(nb)nb.remove();
+  const nb=document.getElementById('tnb');if(nb)nb.remove();
   updateToppingCounts();drawPizza();updateStepUI();
 }
-
 function drawPizza(){
-  ctx.clearRect(0,0,180,180);
+  ctx.clearRect(0,0,184,184);
   ctx.beginPath();ctx.arc(CX,CY,CR,0,Math.PI*2);ctx.fillStyle=curBake?BCC[curBake]:'#e8c58a';ctx.fill();
   ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.fillStyle=curBake?BC[curBake]:'#f5dfa0';ctx.fill();
   if(curSauce){ctx.beginPath();ctx.arc(CX,CY,R-5,0,Math.PI*2);ctx.fillStyle=SC[curSauce];ctx.globalAlpha=.8;ctx.fill();ctx.globalAlpha=1;}
 }
-
-function getTimeLimit(){return Math.max(25000,60000-(level-1)*5000);}
+function getTimeLimit(){return Math.max(25000,(buffs.timer?75000:60000)-(level-1)*5000);}
 function getSpawnInterval(){return Math.max(5000,12000-(level-1)*1200);}
-
-function scheduleSpawn(){
-  clearInterval(spawnTimer);
-  spawnTimer=setInterval(spawnCustomer,getSpawnInterval());
-}
-
+function getMaxSlot(){return buffs.slot?6:4;}
+function scheduleSpawn(){clearInterval(spawnTimer);spawnTimer=setInterval(spawnCustomer,getSpawnInterval());}
 function spawnCustomer(){
-  if(customers.length>=4)return;
+  if(customers.length>=getMaxSlot())return;
+  const isVIP=buffs.vip&&Math.random()<0.2;
   const menu=MENUS[rnd(0,MENUS.length-1)];
-  const id=nextId++;
-  const tl=getTimeLimit();
-  customers.push({id,menu,timeLeft:tl,maxTime:tl});
+  const id=nextId++,tl=getTimeLimit();
+  customers.push({id,menu,timeLeft:tl,maxTime:tl,vip:isVIP});
   newIds.add(id);
-  popup(`${menu.emoji} 새 손님! "${menu.name}" 주문!`,'#1d4ed8');
-  renderQueue();
-  if(renderedCurId===null)renderCurrentCard();
-  updateStepUI();
-  setTimeout(()=>{newIds.delete(id);},2500);
+  popup(`${isVIP?'👑 VIP ':''} ${menu.emoji} 새 손님! "${menu.name}"`,isVIP?'#7c3aed':'#c2410c');
+  renderQueue();if(renderedCurId===null)renderCurrentCard();updateStepUI();
+  setTimeout(()=>newIds.delete(id),2500);
   const iv=setInterval(()=>{
-    const c=customers.find(x=>x.id===id);
-    if(!c){clearInterval(iv);return;}
+    const c=customers.find(x=>x.id===id);if(!c){clearInterval(iv);return;}
     c.timeLeft-=500;
     if(customers[0]&&customers[0].id===id)updateTimerOnly(id);
     if(c.timeLeft<=0){clearInterval(iv);loseCustomer(id);}
   },500);
   timers[id]=iv;
 }
-
 function updateTimerOnly(id){
   const c=customers.find(x=>x.id===id);if(!c)return;
   const pct=Math.max(0,c.timeLeft/c.maxTime*100);
   const bc=pct>55?'#16a34a':pct>25?'#f59e0b':'#dc2626';
-  const sec=Math.ceil(c.timeLeft/1000);
-  const bar=document.getElementById('tb-'+id);
-  const lbl=document.getElementById('ts-'+id);
+  const bar=document.getElementById('tb-'+id),lbl=document.getElementById('ts-'+id);
   if(bar){bar.style.width=pct+'%';bar.style.background=bc;}
-  if(lbl){lbl.textContent=sec+'초';lbl.style.color=bc;}
+  if(lbl){lbl.textContent=Math.ceil(c.timeLeft/1000)+'초';lbl.style.color=bc;}
 }
-
 function renderCurrentCard(){
-  const cc=document.getElementById('cur-cust');
-  if(!customers.length){
-    cc.innerHTML='<div style="font-size:12px;color:var(--color-text-secondary);">손님 기다리는 중...</div>';
-    renderedCurId=null;return;
-  }
-  const f=customers[0];
-  if(renderedCurId===f.id)return;
+  const ts=T(),cc=document.getElementById('cur-cust');
+  if(!customers.length){cc.innerHTML=`<div style="font-size:12px;color:#94a3b8;">손님 기다리는 중...</div>`;renderedCurId=null;return;}
+  const f=customers[0];if(renderedCurId===f.id)return;
   renderedCurId=f.id;
   const pct=Math.max(0,f.timeLeft/f.maxTime*100);
   const bc=pct>55?'#16a34a':pct>25?'#f59e0b':'#dc2626';
-  const sec=Math.ceil(f.timeLeft/1000);
   const isNew=newIds.has(f.id);
-  const tpills=Object.entries(f.menu.toppings).map(([n,cnt])=>`<span class="tpill"><b>${cnt}개</b> ${n}</span>`).join('');
-  cc.innerHTML=`<div class="ccard">
-    <div class="cname">${f.menu.emoji} ${f.menu.name}${isNew?' <span class="nbadge">NEW</span>':''}</div>
-    <div class="corder">
-      <div class="crow"><span class="clabel">소스</span>${SN[f.menu.sauce]}</div>
-      <div class="crow"><span class="clabel">굽기</span>${BN[f.menu.bake]}</div>
-      <div class="crow"><span class="clabel">토핑</span>${tpills}</div>
+  const tpills=Object.entries(f.menu.toppings).map(([n,cnt])=>`<span class="tpill" style="${ts.pill}"><b>${cnt}개</b> ${n}</span>`).join('');
+  const sHL=buffs.auto?`<b style="color:#1d4ed8;">${SN[f.menu.sauce]}</b>`:SN[f.menu.sauce];
+  const bHL=buffs.auto?`<b style="color:#b45309;">${BN[f.menu.bake]}</b>`:BN[f.menu.bake];
+  cc.innerHTML=`<div class="ccard" style="${ts.ccard}">
+    <div class="cname">${f.menu.emoji} ${f.menu.name}
+      ${isNew?`<span class="nbadge" style="background:#dcfce7;color:#15803d;">NEW</span>`:''}
+      ${f.vip?`<span class="nbadge" style="background:#fef3c7;color:#92400e;">👑VIP</span>`:''}
+    </div>
+    <div class="corder" style="${ts.corder}">
+      <div class="crow"><span class="clabel" style="${ts.ptitle}">소스</span>${sHL}</div>
+      <div class="crow"><span class="clabel" style="${ts.ptitle}">굽기</span>${bHL}</div>
+      <div class="crow"><span class="clabel" style="${ts.ptitle}">토핑</span>${tpills}</div>
     </div>
     <div class="tbar-wrap">
-      <div class="tbar-lbl"><span>남은 시간</span><span id="ts-${f.id}" style="color:${bc};font-weight:500;">${sec}초</span></div>
-      <div class="tbar-bg"><div class="tbar" id="tb-${f.id}" style="width:${pct}%;background:${bc};"></div></div>
+      <div class="tbar-lbl" style="${ts.bodyText}"><span>남은 시간</span><span id="ts-${f.id}" style="color:${bc};font-weight:700;">${Math.ceil(f.timeLeft/1000)}초</span></div>
+      <div class="tbar-bg" style="${ts.tbarBg}"><div class="tbar" id="tb-${f.id}" style="width:${pct}%;background:${bc};"></div></div>
     </div>
   </div>`;
 }
-
 function renderQueue(){
-  document.getElementById('queue').innerHTML=customers.slice(1).map(c=>`<span class="qdot${newIds.has(c.id)?' newq':''}" title="${c.menu.name}">${c.menu.emoji}</span>`).join('');
+  document.getElementById('queue').innerHTML=customers.slice(1).map(c=>`<span class="qdot${newIds.has(c.id)?' newq':''}" title="${c.menu.name}">${c.vip?'👑':c.menu.emoji}</span>`).join('');
 }
-
 function loseCustomer(id){
   clearInterval(timers[id]);
   const c=customers.find(x=>x.id===id);
   customers=customers.filter(x=>x.id!==id);
-  angry++;updateHUD();
-  renderedCurId=null;renderCurrentCard();renderQueue();
-  updateStepUI();
+  angry++;comboCount=0;updateHUD();
+  renderedCurId=null;renderCurrentCard();renderQueue();updateStepUI();
   popup(`${c?c.menu.emoji:''} 손님이 화내며 가셨어요!`,'#991b1b');
   showMsg('😤 너무 오래 기다렸어요!','#dc2626','#fef2f2');
 }
-
 function updateHUD(){
   document.getElementById('money').textContent=money.toLocaleString();
   document.getElementById('happy').textContent=happy;
   document.getElementById('angry').textContent=angry;
   document.getElementById('level').textContent=level;
+  updateBuffDisplay();
 }
-
 function servePizza(){
-  // 버그 수정: 손님 없거나 3단계 미완성이면 서빙 불가
-  if(!customers.length){showMsg('❌ 손님이 없어요!','#dc2626','#fef2f2');return;}
+  if(!customers.length){showMsg('❌ 손님 없어요!','#dc2626','#fef2f2');return;}
   if(curStep!==3){showMsg('❌ 피자를 완성해요!','#dc2626','#fef2f2');return;}
   const c=customers[0],o=c.menu;
   let ok=curSauce===o.sauce&&curBake===o.bake;
   const oK=Object.keys(o.toppings);
   if(oK.length!==Object.keys(curToppings).length)ok=false;
   else oK.forEach(k=>{if((curToppings[k]||0)!==o.toppings[k])ok=false;});
-  clearInterval(timers[c.id]);
-  customers=customers.filter(x=>x.id!==c.id);
-  renderedCurId=null;
+  if(!ok&&buffs.hint){
+    const bad=[];
+    if(curSauce!==o.sauce)bad.push('소스');if(curBake!==o.bake)bad.push('굽기');
+    oK.forEach(k=>{if((curToppings[k]||0)!==o.toppings[k])bad.push(k);});
+    showMsg(`💡 틀린 항목: ${bad.join(', ')}!`,'#dc2626','#fef2f2');return;
+  }
+  clearInterval(timers[c.id]);customers=customers.filter(x=>x.id!==c.id);renderedCurId=null;
   if(ok){
-    const earn=5000+level*500;money+=earn;happy++; // 버그수정: 맞을 때만 happy++
+    let earn=5000+level*500;if(c.vip)earn*=2;if(buffs.tip)earn+=1000;
+    comboCount++;if(buffs.combo&&comboCount%3===0){earn+=3000;popup('🔥 콤보! +3,000원','#b45309');}
+    money+=earn;happy++;
     popup(`${c.menu.emoji} 완벽! +${earn.toLocaleString()}원`,'#166534');
-    showMsg('✅ 완벽해요! 🤤','#166534','#dcfce7');
-  } else {
-    money+=500; // 버그수정: 틀리면 angry++, happy 안 올림
-    angry++;
-    popup('⚠️ 주문이 달랐어요... -평판','#92400e');
-    showMsg('⚠️ 주문이 달랐어요! +500원','#92400e','#fef3c7');
+    showMsg(`✅ +${earn.toLocaleString()}원 🤤`,'#166534','#dcfce7');
+  }else{
+    money+=500;angry++;comboCount=0;
+    popup('⚠️ 주문이 달랐어요','#92400e');showMsg('⚠️ 달랐어요 +500원','#92400e','#fef3c7');
   }
   updateHUD();renderCurrentCard();renderQueue();
   const tot=happy+angry;
-  if(tot>0&&tot%5===0){
-    level=Math.min(level+1,8);updateHUD();
-    scheduleSpawn(); // 버그수정: 레벨업 시 스폰 간격 즉시 재조정
-    popup('🎉 레벨업! Lv.'+level,'#5b21b6');
-  }
-  resetPizza();
-  updateStepUI();
+  if(tot>0&&tot%5===0){level=Math.min(level+1,8);updateHUD();scheduleSpawn();popup('🎉 레벨업! Lv.'+level,'#5b21b6');}
+  resetPizza();updateStepUI();
 }
-
 function showMsg(t,color,bg){
   const el=document.getElementById('msg');
-  el.textContent=t;el.style.color=color||'var(--color-text-primary)';el.style.background=bg||'transparent';
+  el.textContent=t;el.style.color=color||'';el.style.background=bg||'transparent';
   setTimeout(()=>{el.textContent='';el.style.background='transparent';},2500);
 }
-
-buildGrid();drawPizza();updateStepUI();
+buildGrid();drawPizza();applyTheme('classic');updateStepUI();updateHUD();
 spawnCustomer();scheduleSpawn();
 </script>
+</body>
+</html>
